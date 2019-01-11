@@ -1,9 +1,27 @@
-const Koa = require('koa');
-const app = new Koa();
+const Koa                   = require('koa');
+const bodyParser            = require('koa-body');
+const Router                = require('koa-router');
+const cors                  = require('koa2-cors');
 
-app.use(async ctx => {
-  ctx.body = 'Hello World';
-  console.log(1111)
-});
+// node原生不支持
+const route = require('./route/index.js')
 
-app.listen(83);
+async function serverinit () {
+
+
+    const app = new Koa();
+
+    app.use(bodyParser());
+    app.use(cors());
+    var router = new Router();
+    router.all('/wugong_serve', route);
+    router.all('/wugong_home', route);
+
+    app.use(router.routes()).use(router.allowedMethods());
+
+    app.listen(83);
+}
+
+
+serverinit();
+
