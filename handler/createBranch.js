@@ -1,4 +1,6 @@
 const BaseClass = require('./baseClass.js');
+// 用子进程来执行shell脚本
+const exec = require('child_process').execSync;
 
 
 class createBranch extends BaseClass{
@@ -8,53 +10,30 @@ class createBranch extends BaseClass{
     async run(ctx, next) {
         try {
             // 检查params
-            let paramsOk = this.checkParams(['catalog_id', 'parent_id', 'name']);
+            let paramsOk = this.checkParams(['project_name']);
             if (!paramsOk) {
                 return next();
             }
             if (
-                typeof this.param.catalog_id !== 'number' ||
-                typeof this.param.parent_id !== 'number' ||
-                typeof this.param.name !== 'string'
+                typeof this.param.project_name !== 'string'
             ) {
                 throw new Error('参数格式不正确')
                 return;
             }
-            this.selfId = Number(this.param.catalog_id);
-            this.parentId = Number(this.param.parent_id);
-            this.name = String(this.param.name);
 
-            if (this.name.length === 0) {
-                this.responseFail('名字长度不能为0', errCode.NOT_VALID_PARAM);
-                return next();
-            }
 
-            // todo uid
-            let catalogArr = await this.CatalogModel.getArrByCatalogId(this.param.catalog_id, 1);
-            if (catalogArr.length > 0) {
-                this.responseFail('数据库中已经有该数据的记录了', errCode.ADD_BUT_ALREADY_HAVE);
-                return next();
-            }
+            // wugong_project_1
+            let project = this.param.project_name;
+            let branch = new Date().getTime() + (Math.random() * 10000).toFixed(0);
 
-            let res = await this.CatalogModel.addNewCatalog(
-                this.selfId,
-                1,
-                this.parentId,
-                this.name,
-            );
-            if (res) {
-                ctx.body = {
-                    success: true,
-                    message: 'addNewCatalog成功啦'
+            exec(`cd ../wugong_home/${project} && git checkout master && git pull origin master&& git checkout -b ${project}_${branch} && git push origin ${project}_${branch}`)
+
+            ctx.body = {
+                success: true,
+                message: '',
+                data:  {
+                    branch: `${project}_${branch}`,
                 }
-                return next();
-            } else {
-
-                ctx.body = {
-                    success: false,
-                    message: 'addNewCatalog失败啦'
-                }
-                return next();
             }
         } catch (e) {
             ctx.body = {
