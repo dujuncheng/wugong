@@ -26,15 +26,14 @@ class createBranch extends BaseClass{
             let project = this.param.project_name;
             let branch = new Date().getTime() + (Math.random() * 10000).toFixed(0);
 
-            exec(`cd ../../home/${project}`)
             console.log(1)
-            exec('git checkout master')
+            exec('git checkout master', {cwd: '/var/www/home/wugong_project_1'})
             console.log(2)
-            exec('git pull origin master')
+            exec('git pull origin master', {cwd: '/var/www/home/wugong_project_1'})
             console.log(3)
-            exec(`git checkout -b ${project}_${branch}`)
+            exec(`git checkout -b ${project}_${branch}`, {cwd: '/var/www/home/wugong_project_1'})
             console.log(4)
-            exec(`git push origin ${project}_${branch}`)
+            exec(`git push origin ${project}_${branch}`, {cwd: '/var/www/home/wugong_project_1'})
             console.log(5)
 
             ctx.body = {
