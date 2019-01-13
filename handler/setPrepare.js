@@ -26,12 +26,13 @@ class setPrepare extends BaseClass{
             // wugong_project_1
             let branch = this.param.branch;
             let project = this.param.project_name;
-            exec(`cd ../wugong_home/${project} && git checkout ${branch} && git pull origin ${branch}`)
+            exec(`cd ../../home/${project} && git checkout ${branch} && git pull origin ${branch} && rm -r node_modules && cnpm install -S && npm run build && sudo rm -r ../../prepare/wugong_project_1/* && cp -r ./dist/* ../../prepare/wugong_project_1/`)
 
             ctx.body = {
                 success: true,
                 message: '',
                 data:  {
+                    cookie: 'YUFA=1'
                 }
             }
         } catch (e) {
