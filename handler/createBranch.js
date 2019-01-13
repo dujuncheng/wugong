@@ -1,6 +1,6 @@
 const BaseClass = require('./baseClass.js');
 // 用子进程来执行shell脚本
-const exec = require('child_process').execSync;
+const {exec} = require('child_process');
 
 
 class createBranch extends BaseClass{
@@ -26,7 +26,15 @@ class createBranch extends BaseClass{
             let project = this.param.project_name;
             let branch = new Date().getTime() + (Math.random() * 10000).toFixed(0);
 
-            exec(`cd ../../home/${project} && git checkout master && git pull origin master&& git checkout -b ${project}_${branch} && git push origin ${project}_${branch}`)
+            let str = `cd ../../home/${project} && git checkout master && git pull origin master&& git checkout -b ${project}_${branch} && git push origin ${project}_${branch}`
+            exec(str, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`执行出错: ${error}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            })
 
             ctx.body = {
                 success: true,
