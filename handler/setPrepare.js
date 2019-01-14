@@ -31,7 +31,11 @@ class setPrepare extends BaseClass{
             console.log(2)
             exec(`git pull origin ${branch}`, {cwd: '/var/www/home/wugong_project_1'})
             console.log(3)
-            exec('rm -r node_modules', {cwd: '/var/www/home/wugong_project_1'})
+            try {
+                exec('rm -r node_modules', {cwd: '/var/www/home/wugong_project_1'})
+            } catch (e) {
+                console.log(e)
+            }
             console.log(4)
             exec('cnpm install -S', {cwd: '/var/www/home/wugong_project_1'})
             console.log(5)
