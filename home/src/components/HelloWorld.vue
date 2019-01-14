@@ -146,7 +146,7 @@
                             message: result.message || '网络错误，请求失败',
                         });
                     }
-                    this.regular = "已经部署到正式环境"
+                    this.regular = "部署到正式, master合并"
                 } catch (e) {
                     this.$message({
                         message: e.message || '网络错误，请求失败',
