@@ -15,11 +15,24 @@
           <div v-if="branch && branch.length > 0">请复制分支名进行开发：<span class="color-blue">{{branch}}</span></div>
       </div>
       <div class="middle-container">
-          <el-button type="success">上预发布</el-button>
+          <el-button type="success" @click="handleSetPrepare">上预发布</el-button>
+
       </div>
       <div class="bottom-container">
           <el-button type="info">上正式环境</el-button>
       </div>
+
+      <el-dialog
+              title="注意"
+              :visible.sync="showPrepareDialog"
+              width="30%"
+              >
+          <span>请确保已经把代码提交到{{branch}}}</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="confirmSetPrepare">确 定</el-button>
+          </span>
+      </el-dialog>
   </div>
 </template>
 
@@ -30,6 +43,7 @@
         data () {
             return {
                 branch: '',
+                showPrepareDialog: false,
                 loadingBranch: false,
                 selected: '',
                 project: [{
@@ -41,8 +55,53 @@
         props: {
         },
         methods: {
+            confirmSetPrepare() {
+                showPrepareDialog = false;
+                this.setPrepare()
+            },
+            async setPrepare() {
+                if (!this.branch) {
+                    this.$message({
+                        message: '还没有新建分支，请先新建一条分支哦',
+                        type: 'warning'
+                    });
+                    return
+                }
+                let config = {
+                    method: 'post',
+                    url: 'http://118.24.193.194:83/wugong_serve?method=create_branch',
+                    data: {
+                        "project_name": "wugong_project_1",
+                        "branch": this.branch,
+                    },
+                }
+                try {
+                    let result = (await axios(config)).data;
+                    if (!result || !result.success) {
+                        this.$message({
+                            message: result.message || '网络错误，请求失败',
+                        });
+                    }
+                } catch (e) {
+                    this.$message({
+                        message: e.message || '网络错误，请求失败',
+                    });
+                }
+
+            },
+            handleSetPrepare() {
+                if (!this.branch || this.branch.length === 0) {
+                    this.$message({
+                        message: '还没有新建分支，请先新建一条分支哦',
+                        type: 'warning'
+                    });
+                    return
+                }
+                showPrepareDialog = true;
+            },
             handleCreateBranch() {
                 this.loadingBranch = true;
+                this.branch = '';
                 axios({
                     method: 'post',
                     url: 'http://118.24.193.194:83/wugong_serve?method=create_branch',
