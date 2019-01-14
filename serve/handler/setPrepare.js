@@ -40,8 +40,6 @@ class setPrepare extends BaseClass{
             exec('cnpm install -S', {cwd: '/var/www/home/wugong_project_1'})
             console.log(5)
             exec('npm run build', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(6)
-            exec('npm run build', {cwd: '/var/www/home/wugong_project_1'})
             console.log(7)
             exec('sudo rm -r /var/www/prepare/wugong_project_1/*', {cwd: '/var/www/home/wugong_project_1'})
             console.log(8)
