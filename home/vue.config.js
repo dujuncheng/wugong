@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/wugong/home/',
+    publicPath: '/wugong/home/dist/',
 }
