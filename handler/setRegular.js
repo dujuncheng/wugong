@@ -26,9 +26,9 @@ class setRegular extends BaseClass{
             // wugong_project_1
             let branch = this.param.branch;
             let project = this.param.project_name;
-            exec(`sudo rm -r ./wugong_project_1`, {cwd: '/var/www/regular/'})
+            // exec(`sudo rm -r ./wugong_project_1`, {cwd: '/var/www/regular/'})
             console.log(1)
-            exec(`cp -r ./wugong_project_1 /var/www/regular/`, {cwd: '/var/www/prepare/'})
+            exec(`rsync -r ./wugong_project_1 /var/www/regular/`, {cwd: '/var/www/prepare/'})
             console.log(2)
 
             ctx.body = {
