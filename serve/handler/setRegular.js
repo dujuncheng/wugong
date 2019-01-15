@@ -30,10 +30,12 @@ class setRegular extends BaseClass{
             console.log(1)
             exec(`rsync -r ./wugong_project_1 /var/www/regular/`, {cwd: '/var/www/prepare/'})
             console.log(2)
-            exec(`git checkout master`, {cwd: '/var/www/home/wugong_project_1'})
+            exec(`git checkout master`, {cwd: '/var/www/home/wugong_project_1/'})
             console.log(3)
-            exec(`git merge ${branch}`, {cwd: '/var/www/home/wugong_project_1'})
-            exec(`git push origin master`, {cwd: '/var/www/home/wugong_project_1'})
+            exec(`git merge ${branch}`, {cwd: '/var/www/home/wugong_project_1/'})
+            console.log(4)
+            exec(`git push origin master`, {cwd: '/var/www/home/wugong_project_1/'})
+            console.log(5)
 
 
             ctx.body = {
