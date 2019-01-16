@@ -26,7 +26,7 @@ class createBranch extends BaseClass{
             let project = this.param.project_name;
             let branch = new Date().getTime() + (Math.random() * 10000).toFixed(0);
             let branchName = `${project}_${branch}`
-            exec(`create_branch.sh ${project} ${branchName}`)
+            exec(`/var/www/wugong/serve/shell/create_branch.sh ${project} ${branchName}`)
 
             ctx.body = {
                 success: true,
