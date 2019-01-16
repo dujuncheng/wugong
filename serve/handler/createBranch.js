@@ -25,16 +25,8 @@ class createBranch extends BaseClass{
             // wugong_project_1
             let project = this.param.project_name;
             let branch = new Date().getTime() + (Math.random() * 10000).toFixed(0);
-
-            console.log(1)
-            exec('git checkout master', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(2)
-            exec('git pull origin master', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(3)
-            exec(`git checkout -b ${project}_${branch}`, {cwd: '/var/www/home/wugong_project_1'})
-            console.log(4)
-            exec(`git push origin ${project}_${branch}`, {cwd: '/var/www/home/wugong_project_1'})
-            console.log(5)
+            let branchName = `${project}_${branch}`
+            exec(`create_branch.sh ${project} ${branchName}`)
 
             ctx.body = {
                 success: true,
