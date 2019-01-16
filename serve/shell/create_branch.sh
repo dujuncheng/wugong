@@ -1,36 +1,15 @@
 #!/bin/sh
 
-echo 'sss'
+echo "create_branch"
 
-IP=""
-NAME=""
-PASSWORD=""
-NEWPASSWORD=""
-
-
-while getopts "H:U:P:N:" arg
-do
-        case $arg in
-             H)
-                IP=$OPTARG
-                ;;
-             U)
-                NAME=$OPTARG
-                ;;
-             P)
-                PASSWORD=$OPTARG
-                ;;
-             N)
-                NEWPASSWORD=$OPTARG
-                ;;
-             ?)
-            echo "含有未知参数"
-        exit 1
-        ;;
-        esac
-done
+project=$1
+echo $project
+branchName=$2
+echo $branchName
 
 
-echo $IP
-echo IP
-
+cd /var/www/home/$project
+git checkout master
+git pull origin master
+git checkout -b $branchName
+git push origin $branchName
