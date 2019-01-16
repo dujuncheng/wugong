@@ -23,28 +23,10 @@ class setPrepare extends BaseClass{
             }
 
 
-            // wugong_project_1
             let branch = this.param.branch;
             let project = this.param.project_name;
-            console.log(1)
-            exec(`git checkout ${branch}`, {cwd: '/var/www/home/wugong_project_1'})
-            console.log(2)
-            exec(`git pull origin ${branch}`, {cwd: '/var/www/home/wugong_project_1'})
-            console.log(3)
-            try {
-                exec('rm -r node_modules', {cwd: '/var/www/home/wugong_project_1'})
-            } catch (e) {
-                console.log(e)
-            }
-            console.log(4)
-            exec('cnpm install -S', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(5)
-            exec('npm run build', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(7)
-            exec('sudo rm -r /var/www/prepare/wugong_project_1/*', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(8)
-            exec('cp -r ./dist/* ../../prepare/wugong_project_1/', {cwd: '/var/www/home/wugong_project_1'})
-            console.log(9)
+
+            exec(`/var/www/wugong/serve/shell/set_prepare.sh ${project} ${branch}`)
 
             ctx.body = {
                 success: true,

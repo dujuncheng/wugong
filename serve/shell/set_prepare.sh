@@ -16,7 +16,7 @@ cnpm install -S
 
 npm run build
 
-sudo rm -r /var/www/prepare/wugong_project_1/*
+sudo rm -r /var/www/prepare/$project/*
 
-cp -r ./dist/* ../../prepare/wugong_project_1/
+cp -r ./dist/* ../../prepare/$project/
 
