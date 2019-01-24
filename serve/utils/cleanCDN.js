@@ -36,8 +36,6 @@ const RefreshCdnUrl = (urlArr) => {
         let data = makePramas(urlArr);
         qcloudSDK.request('RefreshCdnUrl', data, (res) => {
             res = JSON.parse(res)
-            console.log(res)
-            console.log(typeof res)
             if (res) {
                 resolve(res)
             } else {
