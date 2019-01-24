@@ -78,13 +78,6 @@ class cleanCache extends BaseClass{
                     });
                 });
             }
-
-            ctx.body = {
-                success: true,
-                message: '正式发布成功',
-                data:  {}
-            }
-            return next();
         } catch (e) {
             console.log(e)
             ctx.body = {
