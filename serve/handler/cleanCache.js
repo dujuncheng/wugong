@@ -74,7 +74,11 @@ class cleanCache extends BaseClass{
                                 data:  {}
                             }
                         } catch (e) {
-                            throw new Error(e.message || '强缓存清除失败')
+                            console.log(e)
+                            ctx.body = {
+                                success: false,
+                                message: e.message || '请求失败'
+                            }
                         }
                     });
                 });
