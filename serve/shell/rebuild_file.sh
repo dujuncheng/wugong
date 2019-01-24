@@ -5,4 +5,4 @@ echo $path
 
 cd $path
 
-npm run build
+sudo npm run build
