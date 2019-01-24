@@ -66,7 +66,10 @@ class cleanCache extends BaseClass{
                         };
                         try {
                             let path = '/var/www/regular/wugong_project_2'
-                            exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
+                            console.log(1)
+                            exec(`cd ${path}`)
+                            console.log(2)
+                            exec(`sudo npm run build`)
                             ctx.body = {
                                 success: true,
                                 message: '强缓存清除成功',
