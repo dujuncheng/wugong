@@ -69,7 +69,7 @@ class cleanCache extends BaseClass{
                             console.log(1)
                             exec(`cd ${path}`)
                             console.log(2)
-                            exec(`sudo npm run build`)
+                            exec(`npm run build`)
                             ctx.body = {
                                 success: true,
                                 message: '强缓存清除成功',
