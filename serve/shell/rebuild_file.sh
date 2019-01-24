@@ -5,4 +5,6 @@ echo $path
 
 cd $path
 
+echo which node
+
 npm run build
