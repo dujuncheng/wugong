@@ -8,4 +8,4 @@ cd $target
 
 echo which node
 
-npm run build
+sudo npm run build

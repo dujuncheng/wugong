@@ -65,7 +65,7 @@ class cleanCache extends BaseClass{
                             return
                         };
                         try {
-                            let path = '/var/www/regular/wugong_project_2'
+                            let path = '/var/www/regular/wugong_project_2/'
                             exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
                             ctx.body = {
                                 success: true,
