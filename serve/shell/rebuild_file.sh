@@ -1,9 +1,10 @@
 #!/bin/sh
 
-path=$1
-echo $path
+echo "create_branch"
+target=$1
+echo $target
 
-cd $path
+cd $target
 
 echo which node
 
