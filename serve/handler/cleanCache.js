@@ -50,40 +50,38 @@ class cleanCache extends BaseClass{
 
             // 如果是type === 1 【清除强缓存】
             if (this.param.type === 1) {
-                let path = '/var/www/regular/wugong_project_2/'
-                console.log('111111111111111111111111111')
-                exec(`npm run build`, {cwd: path})
-                // let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
-                // fs.readFile(filePath, 'utf8', function(err, data) {
-                //     if (err) {
-                //         throw new Error(err.message || '强缓存清除失败')
-                //         return
-                //     }
-                //
-                //     var result = data.replace('_insert_', `_insert_${Math.random()}`);
-                //     console.log(result)
-                //     fs.writeFile(filePath, result, 'utf8', function(err) {
-                //         if (err) {
-                //             throw new Error(err.message || '强缓存清除失败')
-                //             return
-                //         };
-                //         try {
-                //             let path = '/var/www/regular/wugong_project_2/'
-                //             exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
-                //             ctx.body = {
-                //                 success: true,
-                //                 message: '强缓存清除成功',
-                //                 data:  {}
-                //             }
-                //         } catch (e) {
-                //             console.log(e)
-                //             ctx.body = {
-                //                 success: false,
-                //                 message: e.message || '请求失败'
-                //             }
-                //         }
-                //     });
-                // });
+                let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
+                fs.readFile(filePath, 'utf8', function(err, data) {
+                    if (err) {
+                        throw new Error(err.message || '强缓存清除失败')
+                        return
+                    }
+
+                    var result = data.replace('_insert_', `_insert_${Math.random()}`);
+                    fs.writeFile(filePath, result, 'utf8', function(err) {
+                        if (err) {
+                            throw new Error(err.message || '强缓存清除失败')
+                            return
+                        };
+                        try {
+                            let path = '/var/www/regular/wugong_project_2/'
+                            exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
+                            ctx.body = {
+                                success: true,
+                                message: '强缓存清除成功',
+                                data:  {}
+                            }
+                            return next();
+                        } catch (e) {
+                            console.log(e)
+                            ctx.body = {
+                                success: false,
+                                message: e.message || '请求失败'
+                            }
+                            return next();
+                        }
+                    });
+                });
                 ctx.body = {
                     success: true,
                     message: '清除缓存成功',
