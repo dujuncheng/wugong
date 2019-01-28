@@ -27,6 +27,32 @@
           <span v-if="regular && !loadingRegular">{{regular}}</span>
       </div>
 
+      <div class="divide-line"></div>
+
+      <div class="cache-container">
+          <div class="cache-item">
+              <el-button type="primary" @click="handleCleanCache(1)">清空强缓存</el-button>
+              <img v-if="loadingCache1" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
+              <span v-if="loadingCache1"> 请稍等1分钟，正在清空缓存 </span>
+              <span v-if="cache1 && !loadingCache1">{{cache1}}</span>
+          </div>
+
+          <div class="cache-item">
+              <el-button type="primary" @click="handleCleanCache(2)">清空CDN缓存</el-button>
+              <img v-if="loadingCache2" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
+              <span v-if="loadingCache2"> 请稍等30s </span>
+              <span v-if="cache2 && !loadingCache2">{{cache2}}</span>
+          </div>
+
+          <div class="cache-item">
+              <el-button type="primary" @click="handleCleanCache(1)">清空协商缓存</el-button>
+              <img v-if="loadingCache3" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
+              <span v-if="loadingCache3"> 请稍等1分钟，正在清空缓存 </span>
+              <span v-if="cache3 && !loadingCache3">{{cache3}}</span>
+          </div>
+
+      </div>
+
       <el-dialog
               title="注意"
               :visible.sync="showPrepareDialog"
@@ -55,6 +81,7 @@
 
 <script>
     const axios = require('axios')
+    import {cleanCache} from '../api.js'
     export default {
         name: 'HelloWorld',
         data () {
@@ -62,8 +89,14 @@
                 branch: '',
                 cookie: '',
                 regular: '',
+                cache1: '',
+                cache2: '',
+                cache3: '',
                 showPrepareDialog: false,
                 showRegularDialog: false,
+                loadingCache1: false,
+                loadingCache2: false,
+                loadingCache3: false,
                 loadingBranch: false,
                 loadingPrepare: false,
                 loadingRegular: false,
@@ -191,7 +224,27 @@
                         this.branch = result.data.branch
                     }
                 })
-            }
+            },
+            async handleCleanCache(type, id) {
+                debugger
+                if (!type) {
+                    return
+                }
+                try {
+                    let param = {
+                        type,
+                        urls: ['http://www.bi15s.cn/wugong_project_2/'],
+                    }
+                    let result = (await cleanCache(param)).data;
+                    console.log(result)
+                    // this.loadingCache1 = false;
+                } catch (e) {
+                    this.$message({
+                        message: e.message || '请求失败',
+                        type: 'warning'
+                    });
+                }
+            },
         }
     }
 </script>
@@ -222,5 +275,18 @@
     .bottom-container {
         padding-top: 20px;
         padding-bottom: 20px;
+    }
+    .divide-line {
+        width: 100%;
+        height: 1px;
+        background-color: dodgerblue;
+    }
+    .cache-container {
+        display: flex;
+        margin-top: 30px;
+        width: 100%;
+    }
+    .cache-item {
+        flex: 1;
     }
 </style>

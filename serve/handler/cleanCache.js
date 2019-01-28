@@ -63,7 +63,9 @@ class cleanCache extends BaseClass{
                 fs.writeFileSync(filePath, result, 'utf8');
 
                 let path = '/var/www/regular/wugong_project_2/'
-                exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
+                exec(`npm run build`, {
+                    cwd: path
+                })
                 ctx.body = {
                     success: true,
                     message: '清除缓存成功',
