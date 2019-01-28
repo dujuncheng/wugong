@@ -6,6 +6,8 @@ echo $target
 
 cd $target
 
-echo which node
+nodeversion = which node
+
+echo $nodeversion
 
 npm run build
