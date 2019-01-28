@@ -67,7 +67,6 @@ class cleanCache extends BaseClass{
                     message: '清除缓存成功',
                     data:  {}
                 }
-                return next();
             }
         } catch (e) {
             console.log(e)
