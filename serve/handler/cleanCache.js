@@ -23,7 +23,7 @@ class cleanCache extends BaseClass{
             }
 
             // 如果type 是2的话，一定要传入urls
-            if (this.param.type === 2 && (!Array.isArray(this.param.urls) || this.param.urls.length === 0)) {
+            if (this.param.type === 2 && ((!Array.isArray(this.param.urls)) || this.param.urls.length === 0)) {
                 throw new Error('参数格式不正确')
                 return;
             }
@@ -61,7 +61,6 @@ class cleanCache extends BaseClass{
 
                 let path = '/var/www/regular/wugong_project_2/'
                 exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
-
                 ctx.body = {
                     success: true,
                     message: '清除缓存成功',

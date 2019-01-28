@@ -11,3 +11,5 @@ nodeversion = which node
 echo $nodeversion
 
 npm run build
+
+echo 'build success'
