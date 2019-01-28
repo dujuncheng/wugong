@@ -23,9 +23,12 @@ class cleanCache extends BaseClass{
             }
 
             // 如果type 是2的话，一定要传入urls
-            if (this.param.type === 2 && ((!Array.isArray(this.param.urls)) || this.param.urls.length === 0)) {
-                throw new Error('参数格式不正确')
-                return;
+            if (this.param.type === 2) {
+                let urls = this.getRequestParam('urls')
+                if ((!Array.isArray(urls)) || urls.length === 0) {
+                    throw new Error('参数格式不正确')
+                    return;
+                }
             }
             // 如果是type === 2, 【清除cdn缓存】
             if (this.param.type === 2) {
