@@ -51,31 +51,23 @@ class cleanCache extends BaseClass{
             // 如果是type === 1 【清除强缓存】
             if (this.param.type === 1) {
                 let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
-                fs.readFileSync(filePath, 'utf8', function(err, data) {
-                    if (err) {
-                        console.log(err)
-                        throw new Error(err.message || '强缓存清除失败')
-                        return
-                    }
+                let data = fs.readFileSync(filePath, 'utf8');
+                if (!data) {
+                    throw new Error(data.message || '强缓存清除失败')
+                    return
+                }
+                var result = data.replace('_insert_', `_insert_${Math.random()}`);
+                fs.writeFileSync(filePath, result, 'utf8');
 
-                    var result = data.replace('_insert_', `_insert_${Math.random()}`);
-                    fs.writeFileSync(filePath, result, 'utf8', function(err) {
-                        if (err) {
-                            console.log(err)
-                            throw new Error(err.message || '强缓存清除失败')
-                            return
-                        };
-                        let path = '/var/www/regular/wugong_project_2/'
-                        exec(`npm run build`, {cwd: path})
-                        exec('echo success')
-                        ctx.body = {
-                            success: true,
-                            message: '清除缓存成功',
-                            data:  {}
-                        }
-                        return next();
-                    });
-                });
+                let path = '/var/www/regular/wugong_project_2/'
+                exec(`npm run build`, {cwd: path})
+                exec('echo success')
+                ctx.body = {
+                    success: true,
+                    message: '清除缓存成功',
+                    data:  {}
+                }
+                return next();
             }
         } catch (e) {
             console.log(e)
