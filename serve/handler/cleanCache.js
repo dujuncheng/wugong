@@ -48,7 +48,7 @@ class cleanCache extends BaseClass{
                         ctx.body = {
                             success: true,
                             message: 'cdn的路径缓存清除成功',
-                            data:  {}
+                            data:  result
                         }
                     } else {
                         throw new Error('cdn的清除失败')
@@ -69,7 +69,7 @@ class cleanCache extends BaseClass{
                         ctx.body = {
                             success: true,
                             message: 'cdn的目录缓存清除成功',
-                            data:  {}
+                            data:  result
                         }
                     } else {
                         throw new Error('cdn的清除失败')

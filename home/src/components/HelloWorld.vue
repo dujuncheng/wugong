@@ -34,27 +34,42 @@
               <el-button type="primary" @click="handleCleanCache(1, 1)">清空强缓存</el-button>
               <img v-if="loadingCache1" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
               <span v-if="loadingCache1"> 请稍等1分钟，正在清空缓存 </span>
-              <span v-if="cache1 && !loadingCache1">{{cache1}}</span>
+              <div v-if="cache1 && !loadingCache1">{{cache1}}</div>
           </div>
 
           <div class="cache-item">
               <el-input
+                      class="input-container"
                       type="textarea"
                       :rows="2"
-                      placeholder="请输入内容"
+                      placeholder="请dir, 使用英文逗号,分割"
                       v-model="cachePath">
               </el-input>
-              <el-button type="primary" @click="handleCleanCache(2, 2)">清CDN缓存(按路径)</el-button>
+              <el-button type="primary" @click="handleCleanCache(2, 2)">按PATH清CDN缓存</el-button>
               <img v-if="loadingCache2" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
               <span v-if="loadingCache2"> 请稍等30s </span>
-              <span v-if="cache2 && !loadingCache2">{{cache2}}</span>
+              <div v-if="cache2 && !loadingCache2">{{cache2}}</div>
           </div>
 
           <div class="cache-item">
-              <el-button type="primary" @click="handleCleanCache(1, 3)">清空协商缓存</el-button>
+              <el-input
+                      class="input-container"
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请dir, 使用英文逗号,分割"
+                      v-model="cacheDir">
+              </el-input>
+              <el-button type="primary" @click="handleCleanCache(3, 3)">按DIR清CDN缓存</el-button>
               <img v-if="loadingCache3" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
-              <span v-if="loadingCache3"> 请稍等1分钟，正在清空缓存 </span>
-              <span v-if="cache3 && !loadingCache3">{{cache3}}</span>
+              <span v-if="loadingCache3"> 请稍等30s </span>
+              <div v-if="cache3 && !loadingCache3">{{cache3}}</div>
+          </div>
+
+          <div class="cache-item">
+              <el-button type="primary" @click="handleCleanCache(1, 4)">清空协商缓存</el-button>
+              <img v-if="loadingCache4" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
+              <span v-if="loadingCache4"> 请稍等1分钟，正在清空缓存 </span>
+              <div v-if="cache4 && !loadingCache4">{{cache4}}</div>
           </div>
 
       </div>
@@ -96,17 +111,22 @@
                 cookie: '',
                 regular: '',
                 cache1: '',
-                cache2: '',
-                cache3: '',
+                cache2: '根据路径来清除CDN缓存',
+                cache3: '根据目录来清除CDN缓存',
+                cache4: '',
                 showPrepareDialog: false,
                 showRegularDialog: false,
                 loadingCache1: false,
                 loadingCache2: false,
                 loadingCache3: false,
+                loadingCache4: false,
                 loadingBranch: false,
                 loadingPrepare: false,
                 loadingRegular: false,
+                // 清除cdn缓存，path
                 cachePath: '',
+                // 清除cdn缓存，dir
+                cacheDir: '',
                 selected: '',
                 project: [{
                     value: '项目1 - wugong_project_1',
@@ -239,6 +259,8 @@
                     this.loadingCache2 = bool;
                 } else if (id === 3) {
                     this.loadingCache3 = bool;
+                } else if (id === 4) {
+                    this.loadingCache4 = bool;
                 }
             },
             setCacheContent(id, content) {
@@ -248,6 +270,8 @@
                     this.cache2 = content;
                 } else if (id === 3) {
                     this.cache3 = content;
+                } else if (id === 4) {
+                    this.cache4 = content;
                 }
             },
             async handleCleanCache(type, id) {
@@ -258,19 +282,26 @@
                 try {
                     let param = {
                         type,
-                        urls: ['http://www.bi15s.cn/wugong_project_2/'],
+                    }
+                    if (type === 2) {
+                        let urls = this.cachePath.split(',')
+                        param.urls = urls;
+                    } else if (type === 3) {
+                        let dirs = this.cacheDir.split(',')
+                        param.dirs = dirs;
                     }
                     let result = (await cleanCache(param)).data;
-                    if (!result || !result.success) {
+                    if (!result || !result.success || !result.data || result.data.code !== 0) {
                         this.$message({
                             message: result.message || '请求失败',
                             type: 'warning'
                         });
+                        this.setCacheContent(id, '出错了，请检查参数')
                         return
                     }
 
                     this.setLoading(id, false)
-                    this.setCacheContent(id, '已清除，访问 http://www.bi15s.cn/wugong_project_2/ 吧')
+                    this.setCacheContent(id, '已清除，访问 http://www.bi15s.cn/wugong_project_2/ 吧, cdn生效时间为5分钟')
                 } catch (e) {
                     this.$message({
                         message: e.message || '请求失败',
@@ -323,5 +354,10 @@
         padding-left: 30px;
         padding-right: 30px;
         margin: 20px;
+        margin-top: 60px;
+    }
+    .input-container {
+        width: 400px;
+        margin-right: 10px;
     }
 </style>
