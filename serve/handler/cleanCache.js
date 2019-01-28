@@ -67,6 +67,7 @@ class cleanCache extends BaseClass{
                         };
                         let path = '/var/www/regular/wugong_project_2/'
                         exec(`npm run build`, {cwd: path})
+                        exec('echo success')
                     });
                 });
                 ctx.body = {
