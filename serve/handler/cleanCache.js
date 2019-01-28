@@ -51,7 +51,7 @@ class cleanCache extends BaseClass{
             // 如果是type === 1 【清除强缓存】
             if (this.param.type === 1) {
                 let path = '/var/www/regular/wugong_project_2/'
-                exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
+                exec(`npm run build`, {cwd: path})
                 // let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
                 // fs.readFile(filePath, 'utf8', function(err, data) {
                 //     if (err) {
