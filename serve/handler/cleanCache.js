@@ -51,7 +51,7 @@ class cleanCache extends BaseClass{
             // 如果是type === 1 【清除强缓存】
             if (this.param.type === 1) {
                 let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
-                fs.readFile(filePath, 'utf8', function(err, data) {
+                fs.readFileSync(filePath, 'utf8', function(err, data) {
                     if (err) {
                         console.log(err)
                         throw new Error(err.message || '强缓存清除失败')
@@ -59,7 +59,7 @@ class cleanCache extends BaseClass{
                     }
 
                     var result = data.replace('_insert_', `_insert_${Math.random()}`);
-                    fs.writeFile(filePath, result, 'utf8', function(err) {
+                    fs.writeFileSync(filePath, result, 'utf8', function(err) {
                         if (err) {
                             console.log(err)
                             throw new Error(err.message || '强缓存清除失败')
