@@ -53,6 +53,7 @@ class cleanCache extends BaseClass{
                 let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
                 fs.readFile(filePath, 'utf8', function(err, data) {
                     if (err) {
+                        console.log(err)
                         throw new Error(err.message || '强缓存清除失败')
                         return
                     }
@@ -60,26 +61,12 @@ class cleanCache extends BaseClass{
                     var result = data.replace('_insert_', `_insert_${Math.random()}`);
                     fs.writeFile(filePath, result, 'utf8', function(err) {
                         if (err) {
+                            console.log(err)
                             throw new Error(err.message || '强缓存清除失败')
                             return
                         };
-                        try {
-                            let path = '/var/www/regular/wugong_project_2/'
-                            exec(`/var/www/wugong/serve/shell/rebuild_file.sh ${path}`)
-                            ctx.body = {
-                                success: true,
-                                message: '强缓存清除成功',
-                                data:  {}
-                            }
-                            return next();
-                        } catch (e) {
-                            console.log(e)
-                            ctx.body = {
-                                success: false,
-                                message: e.message || '请求失败'
-                            }
-                            return next();
-                        }
+                        let path = '/var/www/regular/wugong_project_2/'
+                        exec(`npm run build`, {cwd: path})
                     });
                 });
                 ctx.body = {
