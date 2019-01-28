@@ -31,21 +31,27 @@
 
       <div class="cache-container">
           <div class="cache-item">
-              <el-button type="primary" @click="handleCleanCache(1)">清空强缓存</el-button>
+              <el-button type="primary" @click="handleCleanCache(1, 1)">清空强缓存</el-button>
               <img v-if="loadingCache1" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
               <span v-if="loadingCache1"> 请稍等1分钟，正在清空缓存 </span>
               <span v-if="cache1 && !loadingCache1">{{cache1}}</span>
           </div>
 
           <div class="cache-item">
-              <el-button type="primary" @click="handleCleanCache(2)">清空CDN缓存</el-button>
+              <el-input
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请输入内容"
+                      v-model="cachePath">
+              </el-input>
+              <el-button type="primary" @click="handleCleanCache(2, 2)">清CDN缓存(按路径)</el-button>
               <img v-if="loadingCache2" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
               <span v-if="loadingCache2"> 请稍等30s </span>
               <span v-if="cache2 && !loadingCache2">{{cache2}}</span>
           </div>
 
           <div class="cache-item">
-              <el-button type="primary" @click="handleCleanCache(1)">清空协商缓存</el-button>
+              <el-button type="primary" @click="handleCleanCache(1, 3)">清空协商缓存</el-button>
               <img v-if="loadingCache3" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
               <span v-if="loadingCache3"> 请稍等1分钟，正在清空缓存 </span>
               <span v-if="cache3 && !loadingCache3">{{cache3}}</span>
@@ -100,6 +106,7 @@
                 loadingBranch: false,
                 loadingPrepare: false,
                 loadingRegular: false,
+                cachePath: '',
                 selected: '',
                 project: [{
                     value: '项目1 - wugong_project_1',
@@ -115,8 +122,8 @@
                 this.setPrepare()
             },
             confirmSetRegular() {
-              this.showRegularDialog = false;
-              this.setRegular()
+                this.showRegularDialog = false;
+                this.setRegular()
             },
             async setPrepare() {
                 if (!this.branch) {
@@ -225,19 +232,45 @@
                     }
                 })
             },
+            setLoading(id, bool) {
+                if (id === 1) {
+                    this.loadingCache1 = bool;
+                } else if (id === 2) {
+                    this.loadingCache2 = bool;
+                } else if (id === 3) {
+                    this.loadingCache3 = bool;
+                }
+            },
+            setCacheContent(id, content) {
+                if (id === 1) {
+                    this.cache1 = content;
+                } else if (id === 2) {
+                    this.cache2 = content;
+                } else if (id === 3) {
+                    this.cache3 = content;
+                }
+            },
             async handleCleanCache(type, id) {
-                debugger
-                if (!type) {
+                if (!type || !id) {
                     return
                 }
+                this.setLoading(id, true)
                 try {
                     let param = {
                         type,
                         urls: ['http://www.bi15s.cn/wugong_project_2/'],
                     }
                     let result = (await cleanCache(param)).data;
-                    console.log(result)
-                    // this.loadingCache1 = false;
+                    if (!result || !result.success) {
+                        this.$message({
+                            message: result.message || '请求失败',
+                            type: 'warning'
+                        });
+                        return
+                    }
+
+                    this.setLoading(id, false)
+                    this.setCacheContent(id, '已清除，访问 http://www.bi15s.cn/wugong_project_2/ 吧')
                 } catch (e) {
                     this.$message({
                         message: e.message || '请求失败',
@@ -282,11 +315,13 @@
         background-color: dodgerblue;
     }
     .cache-container {
-        display: flex;
         margin-top: 30px;
         width: 100%;
     }
     .cache-item {
-        flex: 1;
+        text-align: left;
+        padding-left: 30px;
+        padding-right: 30px;
+        margin: 20px;
     }
 </style>

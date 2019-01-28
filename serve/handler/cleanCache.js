@@ -1,8 +1,7 @@
 const BaseClass = require('./baseClass.js');
 // 用子进程来执行shell脚本
 const exec = require('child_process').execSync;
-// import RefreshCdnUrl from '../utils/cleanCDN.js';
-const RefreshCdnUrl = require('../utils/cleanCDN.js')
+const CDN = require('../utils/cleanCDN.js')
 const fs = require('fs')
 
 
@@ -30,15 +29,46 @@ class cleanCache extends BaseClass{
                     return;
                 }
             }
-            // 如果是type === 2, 【清除cdn缓存】
+
+            // 如果type 是3的话，一定要传入dirs
+            if (this.param.type === 3) {
+                let dirs = this.getRequestParam('dirs')
+                if ((!Array.isArray(dirs)) || dirs.length === 0) {
+                    throw new Error('参数格式不正确')
+                    return;
+                }
+            }
+
+            // 如果是type === 2, 【清除cdn PATH缓存】
             if (this.param.type === 2) {
                 try {
                     let urls = this.getRequestParam('urls')
-                    let result = await RefreshCdnUrl(urls);
+                    let result = await CDN.RefreshCdnUrl(urls);
                     if (result) {
                         ctx.body = {
                             success: true,
-                            message: 'cdn的缓存清除成功',
+                            message: 'cdn的路径缓存清除成功',
+                            data:  {}
+                        }
+                    } else {
+                        throw new Error('cdn的清除失败')
+                    }
+
+                } catch (e) {
+                    throw new Error(e.message || 'cdn的清除失败')
+                }
+                return
+            }
+
+            // 如果是type === 3, 【清除cdn DIR缓存】
+            if (this.param.type === 3) {
+                try {
+                    let dirs = this.getRequestParam('dirs')
+                    let result = await CDN.RefreshCdnDir(dirs);
+                    if (result) {
+                        ctx.body = {
+                            success: true,
+                            message: 'cdn的目录缓存清除成功',
                             data:  {}
                         }
                     } else {
