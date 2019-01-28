@@ -51,6 +51,7 @@ class cleanCache extends BaseClass{
             // 如果是type === 1 【清除强缓存】
             if (this.param.type === 1) {
                 let path = '/var/www/regular/wugong_project_2/'
+                console.log('111111111111111111111111111')
                 exec(`npm run build`, {cwd: path})
                 // let filePath = '/var/www/regular/wugong_project_2/src/App.vue'
                 // fs.readFile(filePath, 'utf8', function(err, data) {
@@ -83,6 +84,12 @@ class cleanCache extends BaseClass{
                 //         }
                 //     });
                 // });
+                ctx.body = {
+                    success: true,
+                    message: '清除缓存成功',
+                    data:  {}
+                }
+                return next();
             }
         } catch (e) {
             console.log(e)
