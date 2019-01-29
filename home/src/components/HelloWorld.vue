@@ -65,12 +65,12 @@
               <div v-if="cache3 && !loadingCache3">{{cache3}}</div>
           </div>
 
-          <div class="cache-item">
-              <el-button type="primary" @click="handleCleanCache(1, 4)">清空协商缓存</el-button>
-              <img v-if="loadingCache4" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
-              <span v-if="loadingCache4"> 请稍等1分钟，正在清空缓存 </span>
-              <div v-if="cache4 && !loadingCache4">{{cache4}}</div>
-          </div>
+          <!--<div class="cache-item">-->
+              <!--<el-button type="primary" @click="handleCleanCache(1, 4)">清空协商缓存</el-button>-->
+              <!--<img v-if="loadingCache4" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">-->
+              <!--<span v-if="loadingCache4"> 请稍等1分钟，正在清空缓存 </span>-->
+              <!--<div v-if="cache4 && !loadingCache4">{{cache4}}</div>-->
+          <!--</div>-->
 
           <!-- 设置强缓存时间 -->
           <div class="cache-item">
@@ -86,6 +86,12 @@
               <el-input v-model="setHtmlTimeCDN" placeholder="html CDN缓存时间，eg:5m, 5s"></el-input>
               <el-input v-model="setJsTimeCDN" placeholder="js CDN缓存时间，eg:5m, 5s"></el-input>
               <el-button type="primary" @click="setCache(2)">设置CDN缓存</el-button>
+          </div>
+
+          <!-- 开启 or 关闭cdn -->
+          <div class="cache-item">
+              <el-button type="primary" @click="setCDN(1)">开启CDN缓存</el-button>
+              <el-button type="primary" @click="setCDN(2)">关闭CDN缓存</el-button>
           </div>
 
       </div>
@@ -118,7 +124,7 @@
 
 <script>
     const axios = require('axios')
-    import {cleanCache, setCache} from '../api.js'
+    import {cleanCache, setCache, setCDN} from '../api.js'
     export default {
         name: 'HelloWorld',
         data () {
@@ -355,6 +361,46 @@
                         this.$message({
                             message: result.message || '请求成功',
                             type: 'success'
+                        });
+                    }
+                } catch (e) {
+                    this.$message({
+                        message: e.message || '请求失败',
+                        type: 'warning'
+                    });
+                }
+            },
+            /**
+             * 设置CDN
+             * @param type 1 OPEN 2 CLOSE
+             * @returns {Promise<void>}
+             */
+            async setCDN(type) {
+                try {
+                    let param = {
+                        type,
+                    }
+                    let result = (await setCDN(param)).data;
+
+                    debugger
+                    if (!result || !result.success || !result.data || result.data.code !== 0) {
+                        this.$message({
+                            message: result.data.message || '请求失败',
+                            type: 'warning'
+                        });
+                        return
+                    }
+
+                    if (result) {
+                        this.$message({
+                            message: result.message || '请求成功',
+                            type: 'success'
+                        });
+                    } else {
+
+                        this.$message({
+                            message: e.message || '请求失败',
+                            type: 'warning'
                         });
                     }
                 } catch (e) {

@@ -21,4 +21,14 @@ let setCache = (param) => {
 
 }
 
-export {cleanCache, setCache}
+
+let setCDN = (param) => {
+    return axios({
+        method: 'post',
+        url: `${remoteHost}/wugong_serve?method=set_cdn`,
+        data: param,
+    })
+
+}
+
+export {cleanCache, setCache, setCDN}

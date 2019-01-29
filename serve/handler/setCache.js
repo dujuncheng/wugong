@@ -12,7 +12,6 @@ class setCache extends BaseClass{
     }
     async run(ctx, next) {
         try {
-            debugger
             // 检查params
             let paramsOk = this.checkParams(['type', 'obj']);
             if (!paramsOk) {
@@ -72,7 +71,7 @@ class setCache extends BaseClass{
                 let result = await CDN.updateCDN(params);
                 ctx.body = {
                     success: true,
-                    message: '协商缓存设置成功',
+                    message: 'cdn缓存设置成功',
                     data:  result
                 }
             }
