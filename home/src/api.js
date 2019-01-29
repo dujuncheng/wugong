@@ -6,11 +6,19 @@ const localHost = 'http://127.0.0.1:83';
 let cleanCache = (param) => {
     return axios({
         method: 'post',
-        url: `${localHost}/wugong_serve?method=clean_cache`,
+        url: `${remoteHost}/wugong_serve?method=clean_cache`,
         data: param,
     })
 
 }
 
+let setCache = (param) => {
+    return axios({
+        method: 'post',
+        url: `${remoteHost}/wugong_serve?method=set_cache`,
+        data: param,
+    })
 
-export {cleanCache}
+}
+
+export {cleanCache, setCache}

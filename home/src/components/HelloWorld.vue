@@ -72,6 +72,14 @@
               <div v-if="cache4 && !loadingCache4">{{cache4}}</div>
           </div>
 
+          <!-- 设置抢缓存时间 -->
+          <div class="cache-item">
+              <el-input v-model="setCssTime" placeholder="css缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setHtmlTime" placeholder="html缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setJsTime" placeholder="js缓存时间，eg:5m, 5s"></el-input>
+              <el-button type="primary" @click="setCache()">设置强缓存</el-button>
+          </div>
+
       </div>
 
       <el-dialog
@@ -102,7 +110,7 @@
 
 <script>
     const axios = require('axios')
-    import {cleanCache} from '../api.js'
+    import {cleanCache, setCache} from '../api.js'
     export default {
         name: 'HelloWorld',
         data () {
@@ -132,6 +140,9 @@
                     value: '项目1 - wugong_project_1',
                     label: 'wugong_project_1'
                 }],
+                setCssTime: '',
+                setJsTime: '',
+                setHtmlTime: '',
             }
         },
         props: {
@@ -302,6 +313,30 @@
 
                     this.setLoading(id, false)
                     this.setCacheContent(id, '已清除，访问 http://www.bi15s.cn/wugong_project_2/ 吧, cdn生效时间为5分钟')
+                } catch (e) {
+                    this.$message({
+                        message: e.message || '请求失败',
+                        type: 'warning'
+                    });
+                }
+            },
+            async setCache(type) {
+                try {
+                    let param = {}
+                    param.type = type
+                    param.obj.cssCacheTime = this.setCssTime || ''
+                    param.obj.jsCacheTime = this.setJsTime || ''
+                    param.obj.htmlCacheTime = this.setHtmlTime || ''
+                    let result = (await setCache(param)).data;
+                    if (!result || !result.success || !result.data || result.data.code !== 0) {
+                        this.$message({
+                            message: result.message || '请求失败',
+                            type: 'warning'
+                        });
+                        this.setCacheContent(id, '出错了，请检查参数')
+                        return
+                    }
+                    console.log(result)
                 } catch (e) {
                     this.$message({
                         message: e.message || '请求失败',

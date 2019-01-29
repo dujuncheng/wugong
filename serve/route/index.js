@@ -3,6 +3,7 @@ const setPrepare                = require('../handler/setPrepare.js');
 const setRegular                = require('../handler/setRegular.js');
 const cleanCache                = require('../handler/cleanCache.js');
 const setCache                = require('../handler/setCache.js');
+const setCDN                = require('../handler/setCDN.js');
 
 const routeMap = {
     'create_branch': createBranch,
@@ -10,6 +11,7 @@ const routeMap = {
     'set_regular': setRegular,
     'clean_cache': cleanCache,
     'set_cache': setCache,
+    'set_cdn': setCDN,
 }
 
 const route = async (ctx, next) => {

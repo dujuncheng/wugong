@@ -83,10 +83,50 @@ const RefreshCdnDir = (urlArr) => {
 }
 
 
+/**
+ * 关闭CDN
+ * @param urlArr
+ * @constructor
+ */
+const closeCDN = (params) => {
+    return new Promise((resolve, reject) => {
+        qcloudSDK.request('OfflineHost', params, (res) => {
+            res = JSON.parse(res)
+            if (res) {
+                resolve(res)
+            } else {
+                reject(res)
+            }
+        })
+    })
+}
+
+
+/**
+ * 打开CDN
+ * @param urlArr
+ * @constructor
+ */
+const openCDN = (params) => {
+    return new Promise((resolve, reject) => {
+        qcloudSDK.request('OnlineHost', params, (res) => {
+            res = JSON.parse(res)
+            if (res) {
+                resolve(res)
+            } else {
+                reject(res)
+            }
+        })
+    })
+}
+
+
 
 module.exports = {
     RefreshCdnUrl,
-    RefreshCdnDir
+    RefreshCdnDir,
+    closeCDN,
+    openCDN
 }
 
 
