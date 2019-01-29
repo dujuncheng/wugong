@@ -122,11 +122,31 @@ const openCDN = (params) => {
 
 
 
+/**
+ * 更新CDN
+ * @param urlArr
+ * @constructor
+ */
+const updateCDN = (params) => {
+    return new Promise((resolve, reject) => {
+        qcloudSDK.request('UpdateCdnConfig', params, (res) => {
+            res = JSON.parse(res)
+            if (res) {
+                resolve(res)
+            } else {
+                reject(res)
+            }
+        })
+    })
+}
+
+
 module.exports = {
     RefreshCdnUrl,
     RefreshCdnDir,
     closeCDN,
-    openCDN
+    openCDN,
+    updateCDN
 }
 
 
