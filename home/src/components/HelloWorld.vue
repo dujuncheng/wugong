@@ -72,12 +72,20 @@
               <div v-if="cache4 && !loadingCache4">{{cache4}}</div>
           </div>
 
-          <!-- 设置抢缓存时间 -->
+          <!-- 设置强缓存时间 -->
           <div class="cache-item">
-              <el-input v-model="setCssTime" placeholder="css缓存时间，eg:5m, 5s"></el-input>
-              <el-input v-model="setHtmlTime" placeholder="html缓存时间，eg:5m, 5s"></el-input>
-              <el-input v-model="setJsTime" placeholder="js缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setCssTime" placeholder="css强缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setHtmlTime" placeholder="html强缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setJsTime" placeholder="js强缓存时间，eg:5m, 5s"></el-input>
               <el-button type="primary" @click="setCache(1)">设置强缓存</el-button>
+          </div>
+
+          <!-- 设置CDN缓存时间 -->
+          <div class="cache-item">
+              <el-input v-model="setCssTimeCDN" placeholder="cssCDN缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setHtmlTimeCDN" placeholder="html CDN缓存时间，eg:5m, 5s"></el-input>
+              <el-input v-model="setJsTimeCDN" placeholder="js CDN缓存时间，eg:5m, 5s"></el-input>
+              <el-button type="primary" @click="setCache(2)">设置CDN缓存</el-button>
           </div>
 
       </div>
@@ -143,6 +151,9 @@
                 setCssTime: '',
                 setJsTime: '',
                 setHtmlTime: '',
+                setCssTimeCDN: '',
+                setJsTimeCDN: '',
+                setHtmlTimeCDN: '',
             }
         },
         props: {
@@ -321,21 +332,19 @@
                 }
             },
             /**
-             * 设置缓存时间
+             * 设置 强缓存，cdn缓存时间
              * @param type 1 强缓存 2 cdn缓存 3 协商缓存
              * @returns {Promise<void>}
              */
             async setCache(type) {
-                debugger
                 try {
                     let param = {}
                     param.type = type
                     param.obj = {}
-                    param.obj.cssCacheTime = this.setCssTime || ''
-                    param.obj.jsCacheTime = this.setJsTime || ''
-                    param.obj.htmlCacheTime = this.setHtmlTime || ''
+                    param.obj.cssCacheTime = this.setCssTimeCDN || ''
+                    param.obj.jsCacheTime = this.setJsTimeCDN || ''
+                    param.obj.htmlCacheTime = this.setHtmlTimeCDN || ''
                     let result = (await setCache(param)).data;
-                    console.log(result)
                     if (!result || !result.success || !result.data) {
                         this.$message({
                             message: result.message || '请求失败',
