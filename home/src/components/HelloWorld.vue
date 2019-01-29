@@ -77,7 +77,7 @@
               <el-input v-model="setCssTime" placeholder="css缓存时间，eg:5m, 5s"></el-input>
               <el-input v-model="setHtmlTime" placeholder="html缓存时间，eg:5m, 5s"></el-input>
               <el-input v-model="setJsTime" placeholder="js缓存时间，eg:5m, 5s"></el-input>
-              <el-button type="primary" @click="setCache()">设置强缓存</el-button>
+              <el-button type="primary" @click="setCache(1)">设置强缓存</el-button>
           </div>
 
       </div>
@@ -320,23 +320,34 @@
                     });
                 }
             },
+            /**
+             * 设置缓存时间
+             * @param type 1 强缓存 2 cdn缓存 3 协商缓存
+             * @returns {Promise<void>}
+             */
             async setCache(type) {
+                debugger
                 try {
                     let param = {}
                     param.type = type
+                    param.obj = {}
                     param.obj.cssCacheTime = this.setCssTime || ''
                     param.obj.jsCacheTime = this.setJsTime || ''
                     param.obj.htmlCacheTime = this.setHtmlTime || ''
                     let result = (await setCache(param)).data;
-                    if (!result || !result.success || !result.data || result.data.code !== 0) {
+                    console.log(result)
+                    if (!result || !result.success || !result.data) {
                         this.$message({
                             message: result.message || '请求失败',
                             type: 'warning'
                         });
-                        this.setCacheContent(id, '出错了，请检查参数')
-                        return
                     }
-                    console.log(result)
+                    if (result.success) {
+                        this.$message({
+                            message: result.message || '请求成功',
+                            type: 'success'
+                        });
+                    }
                 } catch (e) {
                     this.$message({
                         message: e.message || '请求失败',
