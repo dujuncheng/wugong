@@ -65,12 +65,12 @@
               <div v-if="cache3 && !loadingCache3">{{cache3}}</div>
           </div>
 
-          <!--<div class="cache-item">-->
-              <!--<el-button type="primary" @click="handleCleanCache(1, 4)">清空协商缓存</el-button>-->
-              <!--<img v-if="loadingCache4" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">-->
-              <!--<span v-if="loadingCache4"> 请稍等1分钟，正在清空缓存 </span>-->
-              <!--<div v-if="cache4 && !loadingCache4">{{cache4}}</div>-->
-          <!--</div>-->
+          <div class="cache-item">
+              <el-button type="primary" @click="handleCleanCache(1, 4)">清空协商缓存</el-button>
+              <img v-if="loadingCache4" class="loadingBranch" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547402653549&di=7af100875d9d454d4d1522c0be6d30be&imgtype=0&src=http%3A%2F%2Fspider.nosdn.127.net%2F2964c767d5798be6c8f83739fb5689b9.gif" alt="">
+              <span v-if="loadingCache4"> 请稍等1分钟，正在清空缓存 </span>
+              <div v-if="cache4 && !loadingCache4">{{cache4}}</div>
+          </div>
 
           <!-- 设置强缓存时间 -->
           <div class="cache-item">
